@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Превью рекламы Paul Martin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&amp;family=Montserrat:wght@400;500;600&amp;display=swap">
+<link rel="preload" as="image" href="media/hero.jpg">
+<style>
+:root{
+  /* Layout: a quiet dark stage holding one phone. Inside it, a plain grey app shows the ad;
+     the one loud thing is the olive-and-cream Paul Martin page that rises over the app. */
+  --stage:#1d1b14;        /* stage ground, the brand olive taken almost to black */
+  --stage-lift:#2e2b1f;   /* soft light behind the phone */
+  --olive:#45412e;        /* ground of the store's FW 26/27 title card */
+  --olive-deep:#2b2920;   /* footer and bars on the collection page */
+  --cream:#fbe2bd;        /* lettering colour of the same title card */
+  --stone:#e8e1d5;        /* light shelf under the product shots */
+  --ink:#221f17;          /* text on stone */
+  --ink-soft:#5f5749;     /* secondary text on stone */
+  --gold:#c9a45c;         /* focus ring only */
+  --ui:#161616; --ui-soft:#6f6f6f; --ui-line:#e7e7e7; --ui-ghost:#ececec; --ui-bg:#ffffff;
+  --display:"Montserrat","Segoe UI",system-ui,sans-serif;
+  --serif:"Cormorant Garamond","Times New Roman",Times,serif;
+  --sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --s:1;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+html{color-scheme:dark;-webkit-text-size-adjust:100%}
+body{background:var(--stage);color:var(--cream);font-family:var(--display);overflow:hidden}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+img,video{display:block;max-width:100%}
+img{height:auto}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.feed :focus-visible{outline-color:#161616}
+.story :focus-visible{outline-color:#fff}
+
+/* ---------- stage and guide ---------- */
+.stage{height:100%;display:grid;grid-template-rows:minmax(0,1fr);background:radial-gradient(110% 80% at 72% 34%,var(--stage-lift),var(--stage) 64%)}
+.guide{display:none;align-items:center;justify-content:space-between;gap:10px;min-height:52px;padding:8px 14px}
+.guide-copy,.guide-note{display:none}
+.demo-tag{flex:none;margin:0;padding:5px 11px;border:1px solid rgba(251,226,189,.42);border-radius:999px;font-size:12px;font-weight:500;line-height:1.2;white-space:nowrap}
+.guide-controls{display:flex;align-items:center;gap:10px}
+.seg{display:inline-flex;padding:3px;border:1px solid rgba(251,226,189,.42);border-radius:999px}
+.seg button{min-width:76px;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;line-height:1}
+.seg button[aria-pressed="true"]{background:var(--cream);color:var(--olive-deep)}
+.restart{display:inline-flex;align-items:center;gap:8px;min-width:36px;height:36px;justify-content:center;border-radius:999px;font-size:13px;font-weight:500}
+.restart span{display:none}
+
+.phone-wrap{min-width:0;min-height:0;display:grid;place-items:stretch}
+.phone-box{position:relative;width:100%;height:100%}
+.phone{position:relative;width:100%;height:100%}
+.screen{position:relative;width:100%;height:100%;overflow:hidden;overflow:clip;background:var(--ui-bg);container-type:size;isolation:isolate}
+
+@media (min-width:521px){
+  .stage{grid-template-rows:auto minmax(0,1fr)}
+  .guide{display:flex}
+  .phone-wrap{place-items:center;padding:8px 16px 20px}
+  .phone-box{width:calc(414px*var(--s));height:calc(868px*var(--s))}
+  .phone{position:absolute;left:0;top:0;width:414px;height:868px;padding:12px;border-radius:56px;background:#0b0a08;box-shadow:0 0 0 1px rgba(251,226,189,.16),0 34px 90px rgba(0,0,0,.6);transform:scale(var(--s));transform-origin:0 0}
+  .screen{border-radius:44px}
+}
+@media (min-width:900px){
+  .stage{grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(300px,430px) auto;justify-content:center;column-gap:clamp(36px,7vw,112px);padding:0 32px}
+  .guide{flex-direction:column;align-items:flex-start;justify-content:center;gap:26px;min-height:0;padding:28px 0;overflow-y:auto}
+  .guide-copy{display:block}
+  .guide-note{display:block}
+  .phone-wrap{padding:24px 0}
+  .restart{padding:0 14px 0 10px;border:1px solid rgba(251,226,189,.42)}
+  .restart span{display:inline}
+}
+.guide h1{margin:0;font-weight:500;font-size:clamp(26px,2.6vw,34px);line-height:1.16;letter-spacing:-.005em;text-wrap:balance}
+.guide-lead{margin:16px 0 0;font-size:15px;line-height:1.6;color:rgba(251,226,189,.82);max-width:36em}
+.steps{margin:24px 0 0;padding:0;list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:14px}
+.steps li{counter-increment:step;display:grid;grid-template-columns:28px 1fr;font-size:15px;line-height:1.5}
+.steps li::before{content:counter(step);font-weight:600;font-variant-numeric:tabular-nums;color:var(--cream)}
+.guide-note{margin:0;font-size:13px;line-height:1.55;color:rgba(251,226,189,.66);max-width:36em}
+
+/* ---------- the neutral app: feed ---------- */
+.view{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ui-bg);color:var(--ui);font-family:var(--sys)}
+.app-bar{flex:none;height:52px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;padding:0 10px 0 16px;border-bottom:1px solid var(--ui-line)}
+.app-title{font-size:20px;font-weight:700;letter-spacing:-.01em;text-align:center}
+.app-bar i{justify-self:start;width:28px;height:28px;border-radius:50%;background:var(--ui-ghost)}
+.to-story{justify-self:end;display:inline-flex;align-items:center;gap:3px;height:36px;padding:0 9px 0 14px;border-radius:999px;background:var(--ui-ghost);color:var(--ui);font:600 13px/1 var(--sys)}
+.feed-scroll{flex:1;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none}
+.feed-scroll::-webkit-scrollbar{display:none}
+.post{border-bottom:1px solid var(--ui-line)}
+.ghost-tail{display:flex;flex-direction:column;gap:9px;padding:14px 16px 16px}
+.ghost-head{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.ghost-lines{flex:1;display:flex;flex-direction:column;gap:7px}
+.g-av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--ui-ghost)}
+.g-l{display:block;height:10px;border-radius:5px;background:var(--ui-ghost)}
+.g-media{aspect-ratio:4/5;background:#f1f1f1}
+.post-head{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.avatar{flex:none;width:36px;height:36px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 0 0 1px #dcdcdc}
+.post-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.post-who b{font-size:14px;font-weight:600;line-height:1.2}
+.post-who small{font-size:12px;line-height:1.2;color:var(--ui-soft)}
+.post-more{color:var(--ui-soft);font-size:11px;letter-spacing:2px;line-height:1}
+.ad-media{position:relative}
+.ad-track{position:relative;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none}
+.ad-track::-webkit-scrollbar{display:none}
+.ad-slide{flex:0 0 100%;min-width:0;scroll-snap-align:start;display:block;aspect-ratio:4/5;background:#d9d2c5}
+.ad-slide img{width:100%;height:100%;object-fit:cover}
+.ad-slide:focus-visible{outline-offset:-3px}
+.ad-count{position:absolute;top:12px;right:12px;padding:4px 9px;border-radius:999px;background:rgba(0,0,0,.58);color:#fff;font-size:12px;line-height:1.2;font-variant-numeric:tabular-nums}
+.nav{position:absolute;top:50%;width:34px;height:34px;margin-top:-17px;border-radius:50%;background:rgba(255,255,255,.92);color:#111;display:none;place-items:center}
+.nav.prev{left:10px}
+.nav.next{right:10px}
+@media (hover:hover){.ad-media:hover .nav,.ad-media:focus-within .nav{display:grid}}
+.ad-cta{width:100%;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:var(--olive);color:var(--cream);font:600 14px/1 var(--sys)}
+.ad-cta:focus-visible{outline-offset:-3px}
+.post-actions{display:flex;align-items:center;gap:14px;padding:8px 16px 2px}
+.post-actions svg{display:block}
+.like{width:32px;height:32px;margin-left:-4px;display:grid;place-items:center;border-radius:50%}
+.like[aria-pressed="true"] svg{fill:#c53a31;stroke:#c53a31}
+.dots{margin-left:auto;display:flex;gap:5px}
+.dots i{width:6px;height:6px;border-radius:50%;background:#cfcfcf}
+.dots i.on{background:var(--ui)}
+.post-text{margin:0;padding:6px 16px 16px;font-size:14px;line-height:1.45}
+.post-text b{font-weight:600}
+.tab-bar{flex:none;height:54px;display:flex;align-items:center;justify-content:space-around;border-top:1px solid var(--ui-line);background:var(--ui-bg)}
+.tab-bar i{width:24px;height:24px;border-radius:8px;background:var(--ui-ghost)}
+.tab-bar i:first-child{background:#bdbdbd}
+
+/* ---------- the neutral app: story ---------- */
+.story{background:#000;color:#fff;touch-action:none;user-select:none;-webkit-user-select:none}
+.story-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.story-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.52),rgba(0,0,0,0) 22%),linear-gradient(to top,rgba(0,0,0,.66),rgba(0,0,0,0) 36%)}
+.story-top{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column;gap:12px;padding:14px 16px 0}
+.story-progress{height:3px;border-radius:2px;background:rgba(255,255,255,.36);overflow:hidden}
+.story-progress i{display:block;width:0;height:100%;background:#fff}
+.story-head{display:flex;align-items:center;gap:10px}
+.story-head .avatar{width:34px;height:34px;box-shadow:0 0 0 1.5px rgba(255,255,255,.9)}
+.story-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.story-who b{font-size:14px;font-weight:600;line-height:1.2}
+.story-who small{font-size:12px;line-height:1.2;opacity:.88}
+.story-close{width:40px;height:40px;margin-right:-10px;display:grid;place-items:center;border-radius:50%}
+.story-cta{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;gap:9px;padding:24px 16px 22px;color:#fff}
+.story-cta:focus-visible{outline-offset:-6px}
+.chev{animation:bob 1.6s ease-in-out infinite}
+.story-pill{padding:13px 24px;border-radius:999px;background:#fff;color:#111;font:600 14px/1 var(--sys)}
+.story-cta small{font-size:12px;line-height:1.2;opacity:.9}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ---------- the Paul Martin page ---------- */
+.xp{position:absolute;inset:0;z-index:5;background:var(--olive);color:var(--cream);font-family:var(--display);transform:translateY(100%);visibility:hidden;transition:transform .46s cubic-bezier(.22,.9,.24,1),visibility 0s linear .46s}
+.xp.is-open{transform:none;visibility:visible;transition-delay:0s,0s}
+.xp.is-dragging{visibility:visible;transition:none}
+.xp-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none}
+.xp-scroll::-webkit-scrollbar{display:none}
+.xp h2{margin:0;font-weight:500;font-size:21px;line-height:1.2;text-wrap:balance}
+.xp-close{position:absolute;top:14px;left:14px;z-index:3;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.44);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pm-mark{margin:0;padding-left:.34em;text-align:center;text-transform:uppercase;font-weight:500;font-size:13px;line-height:1;letter-spacing:.34em}
+.pm-mark small{display:block;margin-top:6px;padding-left:.08em;font-size:7.5px;letter-spacing:.42em;opacity:.86}
+
+.xp-hero{position:relative;height:100%;min-height:440px;overflow:hidden;background:#15140f}
+.xp-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.xp-hero-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(21,20,15,.6),rgba(21,20,15,0) 20%),linear-gradient(to top,rgba(21,20,15,.96) 7%,rgba(21,20,15,.52) 38%,rgba(21,20,15,0) 62%)}
+.xp-hero .pm-mark{position:absolute;left:0;right:0;top:25px}
+.xp-hero-text{position:absolute;left:24px;right:56px;bottom:104px}
+.season{margin:0;font-weight:500;font-size:62px;font-size:min(16.2cqw,72px);line-height:.97;letter-spacing:.012em;text-transform:uppercase}
+.season span{display:block}
+.season-sub{margin:16px 0 0;font-size:14px;line-height:1.4;letter-spacing:.03em;color:rgba(251,226,189,.92)}
+.scroll-cue{position:absolute;right:24px;bottom:108px;width:1px;height:56px;overflow:hidden;background:rgba(251,226,189,.3)}
+.scroll-cue::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:var(--cream);animation:cue 2.2s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes cue{to{top:100%}}
+
+.xp-statement{padding:56px 24px 52px}
+.quote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:35px;line-height:1.08;text-wrap:balance}
+.xp-statement .body{margin:20px 0 0;max-width:34em;font-size:14.5px;line-height:1.66;color:rgba(251,226,189,.86)}
+
+.xp-looks{padding:4px 0 56px}
+.block-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
+.xp-looks .block-head{padding:0 24px}
+.count{font-size:12px;font-variant-numeric:tabular-nums;color:rgba(251,226,189,.78)}
+.looks-track{position:relative;display:flex;gap:12px;padding:0 24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:24px;overscroll-behavior-x:contain;scrollbar-width:none}
+.looks-track::-webkit-scrollbar{display:none}
+.look{flex:0 0 76%;min-width:0;margin:0;scroll-snap-align:start}
+.look img{width:100%;aspect-ratio:4/5;object-fit:cover;background:#3a3727}
+.look figcaption{display:flex;flex-direction:column;gap:5px;padding-top:13px}
+.look b{font-weight:500;font-size:15px;line-height:1.3}
+.look span{font-size:13px;line-height:1.5;color:rgba(251,226,189,.82)}
+.looks-nav{display:none;justify-content:flex-end;gap:8px;padding:20px 24px 0}
+@media (hover:hover){.looks-nav{display:flex}}
+.sq{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(251,226,189,.5);border-radius:2px}
+.sq:disabled{opacity:.35;cursor:default}
+
+.xp-products{padding:54px 16px 50px;background:var(--stone);color:var(--ink)}
+.xp-products .block-head{padding:0 8px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 12px}
+.prod{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left}
+.prod img{width:100%;aspect-ratio:4/5;object-fit:cover;margin-bottom:9px;background:#d6cdbd}
+.prod--wide{grid-column:1/-1}
+.prod--wide img{aspect-ratio:5/3}
+.prod b{font-weight:600;font-size:13.5px;line-height:1.3}
+.prod span{font-size:12.5px;line-height:1.4;color:var(--ink-soft)}
+.prod u{margin-top:4px;font-size:12.5px;line-height:1.3;text-underline-offset:3px}
+.prod:focus-visible{outline-color:var(--ink)}
+.fine{margin:30px 8px 0;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+
+.xp-detail{position:relative}
+.xp-detail img{width:100%;aspect-ratio:5/4;object-fit:cover}
+.xp-detail::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(33,31,22,.74),rgba(33,31,22,0) 58%)}
+.xp-detail .quote{position:absolute;z-index:1;left:24px;right:24px;bottom:24px;color:#fff5e4}
+
+.xp-stores{padding:52px 24px 28px;background:var(--olive-deep)}
+.addr{margin:24px 0 0;padding:0;list-style:none}
+.addr li{padding:15px 0;border-top:1px solid rgba(251,226,189,.2);font-weight:500;font-size:15.5px;line-height:1.35}
+.addr li:last-child{border-bottom:1px solid rgba(251,226,189,.2)}
+.tel{margin:20px 0 0;font-weight:500;font-size:20px;line-height:1.2;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.store-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:22px}
+.btn-line{height:46px;border:1px solid rgba(251,226,189,.6);border-radius:2px;font-weight:600;font-size:13px;line-height:1;letter-spacing:.04em}
+.xp-foot{display:flex;flex-direction:column;align-items:center;gap:20px;padding:28px 24px 124px;background:var(--olive-deep)}
+.xp-back{padding:10px;font-size:13px;line-height:1.2;text-decoration:underline;text-underline-offset:4px;color:rgba(251,226,189,.86)}
+.xp-cta{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px 16px 16px;pointer-events:none;background:linear-gradient(to top,rgba(29,27,20,.97) 56%,rgba(29,27,20,0))}
+.btn-primary{pointer-events:auto;width:100%;height:52px;border-radius:2px;background:var(--cream);color:var(--olive-deep);font-weight:600;font-size:14px;line-height:1;letter-spacing:.06em}
+
+/* ---------- demo notes inside the phone ---------- */
+.sheet{position:absolute;inset:0;z-index:9;display:flex;align-items:flex-end;background:rgba(0,0,0,.5);font-family:var(--sys);color:var(--ui)}
+.sheet-card{width:100%;display:flex;flex-direction:column;gap:10px;padding:20px 20px 22px;border-radius:20px 20px 0 0;background:#fff;animation:rise .28s ease-out}
+.sheet-tag{align-self:flex-start;margin:0;padding:4px 10px;border-radius:999px;background:#efeee7;color:#4a4636;font-size:12px;font-weight:600;line-height:1.2}
+.sheet h3{margin:2px 0 0;font-size:18px;font-weight:650;line-height:1.25;text-wrap:balance}
+.sheet-card p:not(.sheet-tag){margin:0;font-size:14.5px;line-height:1.5;color:#474747}
+.sheet-ok{height:48px;margin-top:8px;border-radius:12px;background:#161616;color:#fff;font-size:15px;font-weight:600}
+.sheet-ok:focus-visible{outline-color:#161616}
+@keyframes rise{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+
+@media (prefers-reduced-motion:reduce){
+  .xp{transition:none}
+  .chev,.scroll-cue::after,.sheet-card{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <aside class="guide" aria-label="О демо">
+    <p class="demo-tag">Демо-превью</p>
+    <div class="guide-copy">
+      <h1>Как покупатель увидит рекламу Paul Martin</h1>
+      <p class="guide-lead">В телефоне показаны лента и сторис с рекламой новой коллекции. По нажатию на рекламу поверх открывается страница коллекции на весь экран.</p>
+      <ol class="steps">
+        <li>Выберите, где показана реклама: в ленте или в сторис.</li>
+        <li>В ленте нажмите «Смотреть коллекцию» под фото. В сторис проведите по экрану вверх.</li>
+        <li>Пролистайте страницу и нажмите кнопку связи внизу.</li>
+      </ol>
+    </div>
+    <div class="guide-controls">
+      <div class="seg" role="group" aria-label="Где показана реклама">
+        <button type="button" id="segFeed" aria-pressed="true">Лента</button>
+        <button type="button" id="segStory" aria-pressed="false">Сторис</button>
+      </div>
+      <button type="button" class="restart" id="restart" aria-label="Начать сначала">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4.5 4.5V9H9"/></svg>
+        <span>Начать сначала</span>
+      </button>
+    </div>
+    <p class="guide-note">Фото, видео и тексты взяты из Telegram-канала магазина. Кнопки связи в демо ничего не отправляют и никуда не звонят.</p>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="phone-box">
+      <div class="phone">
+        <main class="screen" id="screen">
+
+          <!-- feed placement -->
+          <section class="view feed" id="viewFeed" aria-label="Лента с рекламой">
+            <header class="app-bar">
+              <i aria-hidden="true"></i>
+              <span class="app-title">Лента</span>
+              <button type="button" class="to-story" id="toStory" aria-label="Показать рекламу в сторис">Сторис<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+            </header>
+            <div class="feed-scroll" id="feedScroll">
+              <div class="post ghost-tail" aria-hidden="true">
+                <span class="g-l" style="width:86%"></span>
+                <span class="g-l" style="width:58%"></span>
+              </div>
+
+              <article class="post" aria-label="Реклама Paul Martin">
+                <header class="post-head">
+                  <img class="avatar" src="img/avatar.png" width="36" height="36" alt="">
+                  <span class="post-who"><b>Paul Martin</b><small>Реклама</small></span>
+                  <span class="post-more" aria-hidden="true">•••</span>
+                </header>
+                <div class="ad-media">
+                  <div class="ad-track" id="adTrack">
+                    <button type="button" class="ad-slide" data-open aria-label="Открыть страницу коллекции, фото 1 из 3"><img src="img/ad-1.jpg" width="1024" height="1280" alt="Светлый пиджак и трикотажное поло из новой коллекции"></button>
+                    <button type="button" class="ad-slide" data-open aria-label="Открыть страницу коллекции, фото 2 из 3"><img src="img/ad-2.jpg" width="1024" height="1280" alt="Бордовый джемпер на молнии" loading="lazy"></button>
+                    <button type="button" class="ad-slide" data-open aria-label="Открыть страницу коллекции, фото 3 из 3"><img src="img/ad-3.jpg" width="1024" height="1280" alt="Тёмно-синяя куртка" loading="lazy"></button>
+                  </div>
+                  <button type="button" class="nav prev" id="adPrev" aria-label="Предыдущее фото"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                  <button type="button" class="nav next" id="adNext" aria-label="Следующее фото"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                  <span class="ad-count" id="adCount" aria-hidden="true">1/3</span>
+                </div>
+                <button type="button" class="ad-cta" data-open>
+                  <span>Смотреть коллекцию</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                </button>
+                <div class="post-actions">
+                  <button type="button" class="like" id="like" aria-pressed="false" aria-label="Нравится">
+                    <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.4S4.6 15.9 4.6 10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.4 2.7c0 5.6-7.4 10.1-7.4 10.1z"/></svg>
+                  </button>
+                  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M5 5.5h14A1.5 1.5 0 0 1 20.500 7v9a1.5 1.5 0 0 1-1.5 1.5h-8.800L6 20.500v-3H5A1.5 1.5 0 0 1 3.500 16V7A1.500 1.500 0 0 1 5 5.500z"/></svg>
+                  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4.500M8 8.200l4-3.900 4 3.900"/><path d="M5 13v5.500A1.500 1.500 0 0 0 6.500 20h11a1.500 1.500 0 0 0 1.500-1.500V13"/></svg>
+                  <span class="dots" id="adDots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                </div>
+                <p class="post-text"><b>Paul Martin</b> Новая коллекция Fall–Winter 26/27 уже в Paul Martin. Элегантные пальто, стильные куртки, классические костюмы и продуманные детали.</p>
+              </article>
+
+              <div class="post" aria-hidden="true">
+                <div class="ghost-head">
+                  <span class="g-av"></span>
+                  <span class="ghost-lines"><span class="g-l" style="width:42%"></span><span class="g-l" style="width:24%"></span></span>
+                </div>
+                <div class="g-media"></div>
+                <div class="ghost-tail">
+                  <span class="g-l" style="width:78%"></span>
+                  <span class="g-l" style="width:46%"></span>
+                </div>
+              </div>
+            </div>
+            <div class="tab-bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          </section>
+
+          <!-- story placement -->
+          <section class="view story" id="viewStory" aria-label="Сторис с рекламой" hidden>
+            <video class="story-video" id="storyVideo" src="media/story.mp4" poster="media/story.jpg" muted loop playsinline preload="metadata" aria-label="Видео: образ со светлым пиджаком из новой коллекции"></video>
+            <div class="story-shade"></div>
+            <div class="story-top">
+              <div class="story-progress" aria-hidden="true"><i id="storyBar"></i></div>
+              <div class="story-head">
+                <img class="avatar" src="img/avatar.png" width="36" height="36" alt="">
+                <span class="story-who"><b>Paul Martin</b><small>Реклама</small></span>
+                <button type="button" class="story-close" id="storyClose" aria-label="Закрыть сторис и вернуться в ленту">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="story-cta" id="storyCta" data-open>
+              <svg class="chev" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+              <span class="story-pill">Смотреть коллекцию</span>
+              <small>Проведите вверх</small>
+            </button>
+          </section>
+
+          <!-- the full-screen page that opens from the ad -->
+          <section class="xp" id="xp" aria-label="Страница коллекции Paul Martin" aria-hidden="true" inert>
+            <div class="xp-scroll" id="xpScroll">
+
+              <header class="xp-hero">
+                <video id="heroVideo" src="media/hero.mp4" poster="media/hero.jpg" muted loop playsinline preload="auto" aria-label="Видео: образ с бордовым джемпером и тёмной курткой"></video>
+                <div class="xp-hero-shade"></div>
+                <p class="pm-mark">Paul Martin<small>Men’s wear</small></p>
+                <div class="xp-hero-text">
+                  <h1 class="season"><span>Fall</span><span>Winter</span><span>26/27</span></h1>
+                  <p class="season-sub">Новая коллекция уже в магазинах</p>
+                </div>
+                <span class="scroll-cue" aria-hidden="true"></span>
+              </header>
+
+              <section class="xp-statement">
+                <p class="quote">Тихая роскошь в каждой детали.</p>
+                <p class="body">Элегантные пальто, стильные куртки, классические костюмы и продуманные детали. Всё для безупречного мужского образа в новом сезоне.</p>
+              </section>
+
+              <section class="xp-looks" aria-labelledby="looksTitle">
+                <div class="block-head">
+                  <h2 id="looksTitle">Образы сезона</h2>
+                  <span class="count" id="lookCount" aria-hidden="true">1 / 6</span>
+                </div>
+                <div class="looks-track" id="looksTrack" tabindex="0" aria-label="Образы сезона, листайте вбок">
+                  <figure class="look">
+                    <img src="img/look-blazer.jpg" width="864" height="1080" loading="lazy" alt="Светлый пиджак, трикотажное поло и брюки, в полный рост">
+                    <figcaption><b>Современная классика в спокойных оттенках</b><span>Светлый пиджак, трикотажное поло, классические брюки и замшевые лоферы.</span></figcaption>
+                  </figure>
+                  <figure class="look">
+                    <img src="img/look-bomber.jpg" width="864" height="1080" loading="lazy" alt="Тёмно-синяя лёгкая куртка, бордовый джемпер и серые брюки">
+                    <figcaption><b>Smart casual без лишних правил</b><span>Лёгкая куртка, трикотажный джемпер на молнии и брюки свободного кроя.</span></figcaption>
+                  </figure>
+                  <figure class="look">
+                    <img src="img/look-navy.jpg" width="864" height="1080" loading="lazy" alt="Тёмно-синяя куртка с отложным воротником и брюки">
+                    <figcaption><b>Сдержанный стиль, уверенный характер</b><span>Классическая куртка в глубоком тёмном оттенке, трикотаж и брюки.</span></figcaption>
+                  </figure>
+                  <figure class="look">
+                    <img src="img/look-grey.jpg" width="864" height="1080" loading="lazy" alt="Серо-голубой пиджак поверх свитера в полоску">
+                    <figcaption><b>Искусство сочетать</b><span>Сдержанные оттенки, безупречная посадка и внимание к деталям.</span></figcaption>
+                  </figure>
+                  <figure class="look">
+                    <img src="img/look-zip.jpg" width="864" height="1080" loading="lazy" alt="Свитер с воротником на молнии и тёмные брюки">
+                    <figcaption><b>На каждый день</b><span>Свитер с воротником на молнии и классические брюки: для офиса, встреч и повседневного стиля.</span></figcaption>
+                  </figure>
+                  <figure class="look">
+                    <img src="img/look-coat.jpg" width="864" height="1080" loading="lazy" alt="Пальто с капюшоном поверх свитера в полоску">
+                    <figcaption><b>Пальто нового сезона</b><span>Пальто с капюшоном поверх свитера в полоску.</span></figcaption>
+                  </figure>
+                </div>
+                <div class="looks-nav">
+                  <button type="button" class="sq" id="lookPrev" aria-label="Предыдущий образ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                  <button type="button" class="sq" id="lookNext" aria-label="Следующий образ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                </div>
+              </section>
+
+              <section class="xp-products" aria-labelledby="prodTitle">
+                <div class="block-head"><h2 id="prodTitle">Из новой коллекции</h2></div>
+                <div class="grid">
+                  <button type="button" class="prod" data-demo="product" data-name="Свитер в полоску, серый">
+                    <img src="img/p-stripe-grey.jpg" width="640" height="799" loading="lazy" alt="Серый свитер в полоску на вешалке">
+                    <b>Свитер в полоску</b><span>Серый</span><u>Уточнить цену</u>
+                  </button>
+                  <button type="button" class="prod" data-demo="product" data-name="Свитер в полоску, кофейный">
+                    <img src="img/p-stripe-brown.jpg" width="640" height="799" loading="lazy" alt="Кофейный свитер в полоску на вешалке">
+                    <b>Свитер в полоску</b><span>Кофейный</span><u>Уточнить цену</u>
+                  </button>
+                  <button type="button" class="prod" data-demo="product" data-name="Свитер с воротником на молнии, зелёный">
+                    <img src="img/p-zip-green.jpg" width="640" height="799" loading="lazy" alt="Зелёный свитер с воротником на молнии на вешалке">
+                    <b>Свитер с воротником на молнии</b><span>Зелёный</span><u>Уточнить цену</u>
+                  </button>
+                  <button type="button" class="prod" data-demo="product" data-name="Джемпер на молнии, бордовый">
+                    <img src="img/p-zip-burgundy.jpg" width="720" height="900" loading="lazy" alt="Бордовый джемпер на молнии">
+                    <b>Джемпер на молнии</b><span>Бордовый</span><u>Уточнить цену</u>
+                  </button>
+                  <button type="button" class="prod prod--wide" data-demo="product" data-name="Обувь из замши">
+                    <img src="img/p-shoes.jpg" width="900" height="539" loading="lazy" alt="Коричневая обувь из замши">
+                    <b>Обувь из замши</b><span>Премиальная замша, лёгкая посадка и универсальный дизайн</span><u>Уточнить цену</u>
+                  </button>
+                  <button type="button" class="prod prod--wide" data-demo="product" data-name="Галстуки">
+                    <img src="img/p-ties.jpg" width="900" height="540" loading="lazy" alt="Галстуки разных цветов и узоров">
+                    <b>Галстуки</b><span>Для деловых встреч, мероприятий и особых случаев</span><u>Уточнить цену</u>
+                  </button>
+                </div>
+                <p class="fine">Размеры и цены подскажем в сообщениях.</p>
+              </section>
+
+              <section class="xp-detail">
+                <img src="img/detail-knit.jpg" width="1024" height="800" loading="lazy" alt="Трикотаж крупным планом: серая вязка с тонкой светлой полоской">
+                <p class="quote">Стиль начинается с деталей.</p>
+              </section>
+
+              <section class="xp-stores" aria-labelledby="storesTitle">
+                <h2 id="storesTitle">Ждём вас в магазинах Paul Martin</h2>
+                <ul class="addr">
+                  <li>ул. Амир Темура, 1</li>
+                  <li>ТРЦ Пойтахт, «Megabrand»</li>
+                </ul>
+                <p class="tel">+998 98 126 16 68</p>
+                <div class="store-actions">
+                  <button type="button" class="btn-line" data-demo="call">Позвонить</button>
+                  <button type="button" class="btn-line" data-demo="route">Маршрут</button>
+                </div>
+              </section>
+
+              <footer class="xp-foot">
+                <p class="pm-mark">Paul Martin<small>Men’s wear</small></p>
+                <button type="button" class="xp-back" data-close>Закрыть страницу</button>
+              </footer>
+            </div>
+
+            <button type="button" class="xp-close" id="xpClose" data-close aria-label="Закрыть страницу коллекции">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+            <div class="xp-cta"><button type="button" class="btn-primary" data-demo="message">Написать в Telegram</button></div>
+          </section>
+
+          <!-- demo notes -->
+          <div class="sheet" id="sheet" hidden>
+            <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-describedby="sheetText">
+              <p class="sheet-tag">Демо-превью</p>
+              <h3 id="sheetTitle"></h3>
+              <p id="sheetText"></p>
+              <button type="button" class="sheet-ok" id="sheetOk">Понятно</button>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var root = document.documentElement;
+  var wrap = $('.phone-wrap');
+  var views = { feed: $('#viewFeed'), story: $('#viewStory') };
+  var seg = { feed: $('#segFeed'), story: $('#segStory') };
+  var feedScroll = $('#feedScroll');
+  var xp = $('#xp'), xpScroll = $('#xpScroll');
+  var storyVideo = $('#storyVideo'), heroVideo = $('#heroVideo'), storyBar = $('#storyBar');
+  var sheet = $('#sheet'), sheetTitle = $('#sheetTitle'), sheetText = $('#sheetText'), sheetOk = $('#sheetOk');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var mqBezel = window.matchMedia('(min-width: 521px)');
+  var mqWide = window.matchMedia('(min-width: 900px)');
+
+  var placement = 'feed', xpOpen = false, lastTrigger = null, sheetTrigger = null;
+  var scale = 1, suppressClick = false, raf = 0;
+
+  function play(v) { try { var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+
+  /* ----- fit the phone to the window (bezel layouts only) ----- */
+  function fit() {
+    if (!mqBezel.matches) { scale = 1; root.style.setProperty('--s', '1'); return; }
+    var cs = getComputedStyle(wrap);
+    var h = wrap.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    var w = mqWide.matches ? Infinity : wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    scale = Math.max(0.45, Math.min(1, h / 868, w / 414));
+    root.style.setProperty('--s', scale.toFixed(4));
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  /* the screen itself never scrolls; undo any scroll a browser applies on its own (older Safari on focus) */
+  var screenEl = $('#screen');
+  screenEl.addEventListener('scroll', function () {
+    if (screenEl.scrollTop || screenEl.scrollLeft) { screenEl.scrollTop = 0; screenEl.scrollLeft = 0; }
+  });
+
+  /* ----- which placement is shown ----- */
+  function progress() {
+    raf = 0;
+    if (placement !== 'story') return;
+    var d = storyVideo.duration;
+    if (d > 0) storyBar.style.width = (storyVideo.currentTime / d * 100).toFixed(2) + '%';
+    raf = requestAnimationFrame(progress);
+  }
+  function setPlacement(p, silent) {
+    if (p !== 'feed' && p !== 'story') return;
+    hideNote();
+    if (xpOpen) closeXp(true);
+    placement = p;
+    views.feed.hidden = p !== 'feed';
+    views.story.hidden = p !== 'story';
+    seg.feed.setAttribute('aria-pressed', String(p === 'feed'));
+    seg.story.setAttribute('aria-pressed', String(p === 'story'));
+    if (p === 'story') { play(storyVideo); if (!raf) raf = requestAnimationFrame(progress); }
+    else { storyVideo.pause(); }
+    if (!silent) { try { history.replaceState(null, '', '#' + p); } catch (e) {} }
+  }
+  seg.feed.addEventListener('click', function () { setPlacement('feed'); });
+  seg.story.addEventListener('click', function () { setPlacement('story'); });
+  $('#toStory').addEventListener('click', function (e) {
+    setPlacement('story');
+    if (e.detail === 0) { try { $('#storyCta').focus({ preventScroll: true }); } catch (err) {} }
+  });
+  $('#storyClose').addEventListener('click', function (e) {
+    setPlacement('feed');
+    if (e.detail === 0) { try { $('#toStory').focus({ preventScroll: true }); } catch (err) {} }
+  });
+
+  /* ----- the collection page ----- */
+  function openXp(trigger) {
+    if (xpOpen) return;
+    xpOpen = true;
+    lastTrigger = trigger || null;
+    xpScroll.scrollTop = 0;
+    xp.classList.add('is-open');
+    xp.removeAttribute('inert');
+    xp.setAttribute('aria-hidden', 'false');
+    views[placement].setAttribute('inert', '');
+    storyVideo.pause();
+    play(heroVideo);
+    window.setTimeout(function () { try { $('#xpClose').focus({ preventScroll: true }); } catch (e) {} }, 80);
+  }
+  function closeXp(skipFocus) {
+    if (!xpOpen) return;
+    xpOpen = false;
+    xp.classList.remove('is-open');
+    xp.setAttribute('inert', '');
+    xp.setAttribute('aria-hidden', 'true');
+    views.feed.removeAttribute('inert');
+    views.story.removeAttribute('inert');
+    heroVideo.pause();
+    if (placement === 'story') play(storyVideo);
+    if (!skipFocus && lastTrigger && lastTrigger.focus) { try { lastTrigger.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  $$('[data-open]').forEach(function (el) {
+    el.addEventListener('click', function () { if (suppressClick) return; openXp(el); });
+  });
+  $$('[data-close]').forEach(function (el) {
+    el.addEventListener('click', function () { closeXp(false); });
+  });
+
+  /* ----- swipe up on the story ----- */
+  var drag = null;
+  function onMove(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dy = (drag.y - e.clientY) / scale;
+    drag.dy = dy;
+    if (dy > 6) {
+      drag.moved = true;
+      xp.classList.add('is-dragging');
+      xp.style.transform = 'translateY(calc(100% - ' + Math.max(0, dy).toFixed(1) + 'px))';
+    }
+  }
+  function onUp(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var d = drag;
+    drag = null;
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    window.removeEventListener('pointercancel', onUp);
+    var speed = d.dy / Math.max(1, performance.now() - d.t);
+    xp.classList.remove('is-dragging');
+    xp.style.transform = '';
+    if (d.moved) {
+      suppressClick = true;
+      window.setTimeout(function () { suppressClick = false; }, 350);
+      if (e.type === 'pointerup' && (d.dy > 90 || speed > 0.45)) openXp($('#storyCta'));
+    }
+  }
+  views.story.addEventListener('pointerdown', function (e) {
+    if (xpOpen || e.target.closest('.story-close')) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    drag = { id: e.pointerId, y: e.clientY, t: performance.now(), dy: 0, moved: false };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+  });
+  views.story.addEventListener('wheel', function (e) {
+    if (!xpOpen && e.deltaY > 24) openXp($('#storyCta'));
+  }, { passive: true });
+
+  /* ----- sideways galleries ----- */
+  function gallery(track, onChange) {
+    var items = $$(':scope > *', track);
+    var index = 0, pending = 0;
+    function pad() { return parseFloat(getComputedStyle(track).paddingLeft) || 0; }
+    function measure() {
+      pending = 0;
+      var p = pad(), best = 0, bestD = Infinity;
+      items.forEach(function (el, i) {
+        var d = Math.abs(el.offsetLeft - p - track.scrollLeft);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      if (best !== index) { index = best; onChange(index, items.length); }
+    }
+    function go(i) {
+      i = Math.max(0, Math.min(items.length - 1, i));
+      track.scrollTo({ left: items[i].offsetLeft - pad(), behavior: reduce.matches ? 'auto' : 'smooth' });
+    }
+    track.addEventListener('scroll', function () { if (!pending) pending = requestAnimationFrame(measure); }, { passive: true });
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+    });
+    onChange(0, items.length);
+    return {
+      next: function () { go(index + 1); },
+      prev: function () { go(index - 1); },
+      reset: function () { track.scrollLeft = 0; index = 0; onChange(0, items.length); }
+    };
+  }
+  var adDots = $$('#adDots i'), adCount = $('#adCount');
+  var ad = gallery($('#adTrack'), function (i, n) {
+    adCount.textContent = (i + 1) + '/' + n;
+    adDots.forEach(function (d, k) { d.classList.toggle('on', k === i); });
+  });
+  $('#adPrev').addEventListener('click', ad.prev);
+  $('#adNext').addEventListener('click', ad.next);
+
+  var lookCount = $('#lookCount'), lookPrev = $('#lookPrev'), lookNext = $('#lookNext');
+  var looks = gallery($('#looksTrack'), function (i, n) {
+    lookCount.textContent = (i + 1) + ' / ' + n;
+    lookPrev.disabled = i === 0;
+    lookNext.disabled = i === n - 1;
+  });
+  lookPrev.addEventListener('click', looks.prev);
+  lookNext.addEventListener('click', looks.next);
+
+  /* ----- like ----- */
+  var like = $('#like');
+  like.addEventListener('click', function () {
+    like.setAttribute('aria-pressed', String(like.getAttribute('aria-pressed') !== 'true'));
+  });
+
+  /* ----- demo notes: what each button does in the live ad ----- */
+  var NOTES = {
+    intro: {
+      title: 'Так рекламу увидит покупатель',
+      text: 'Нажмите «Смотреть коллекцию» под фото, и откроется страница коллекции. Кнопка «Сторис» вверху ленты покажет ту же рекламу в сторис: там страница открывается свайпом вверх.',
+      ok: 'Начать'
+    },
+    message: {
+      title: 'Откроется чат с магазином',
+      text: 'В рабочей рекламе эта кнопка ведёт в Telegram или в личные сообщения магазина. В демо сообщения не отправляются.'
+    },
+    product: {
+      title: '',
+      text: 'В рабочей рекламе нажатие на товар открывает чат с магазином, чтобы уточнить размер и цену. В демо сообщения не отправляются.'
+    },
+    call: {
+      title: 'Начнётся звонок в магазин',
+      text: 'В рабочей рекламе кнопка набирает +998 98 126 16 68. В демо звонок не начинается.'
+    },
+    route: {
+      title: 'Откроется карта с маршрутом',
+      text: 'В рабочей рекламе кнопка открывает маршрут до магазина в картах. В демо карта не открывается.'
+    }
+  };
+  function lockBehind(on) {
+    [views.feed, views.story, xp].forEach(function (el) {
+      if (on) {
+        el.setAttribute('data-inert-before', el.hasAttribute('inert') ? '1' : '0');
+        el.setAttribute('inert', '');
+      } else {
+        if (el.getAttribute('data-inert-before') === '0') el.removeAttribute('inert');
+        el.removeAttribute('data-inert-before');
+      }
+    });
+  }
+  function showNote(kind, name, trigger) {
+    var n = NOTES[kind];
+    if (!n) return;
+    if (!sheet.hidden) hideNote();
+    sheetTrigger = trigger || null;
+    sheetTitle.textContent = kind === 'product' ? name : n.title;
+    sheetText.textContent = n.text;
+    sheetOk.textContent = n.ok || 'Понятно';
+    sheet.hidden = false;
+    lockBehind(true);
+    if (trigger) { try { sheetOk.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  function hideNote() {
+    if (sheet.hidden) return;
+    sheet.hidden = true;
+    lockBehind(false);
+    if (sheetTrigger && sheetTrigger.focus) { try { sheetTrigger.focus({ preventScroll: true }); } catch (e) {} }
+    sheetTrigger = null;
+  }
+  $$('[data-demo]').forEach(function (el) {
+    el.addEventListener('click', function () { showNote(el.getAttribute('data-demo'), el.getAttribute('data-name') || '', el); });
+  });
+  sheetOk.addEventListener('click', hideNote);
+  sheet.addEventListener('click', function (e) { if (e.target === sheet) hideNote(); });
+
+  /* ----- keys, restart, deep links ----- */
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (!sheet.hidden) hideNote(); else if (xpOpen) closeXp(false);
+  });
+  $('#restart').addEventListener('click', function () {
+    hideNote();
+    closeXp(true);
+    setPlacement('feed');
+    feedScroll.scrollTop = 0;
+    xpScroll.scrollTop = 0;
+    ad.reset();
+    looks.reset();
+    like.setAttribute('aria-pressed', 'false');
+    try { storyVideo.currentTime = 0; heroVideo.currentTime = 0; } catch (e) {}
+    storyBar.style.width = '0';
+  });
+  function fromHash() {
+    var h = (location.hash || '').replace('#', '');
+    if (h === 'story' || h === 'feed') setPlacement(h, true);
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  /* On a phone there is no side text, so say once what this is. */
+  if (!mqWide.matches) showNote('intro', '', null);
+})();
+</script>
+</body>
+</html>
